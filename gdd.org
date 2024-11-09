@@ -1,0 +1,36 @@
+* Camera Shy
+A game where you play as a hacker trying to steal secrets from corperations
+
+The game takes place from the hacker's desk. From there they hack into security cameras.
+
+** Camera Hopping
+When taking over a camera, the player's view changes to that camera with a VHS filter on top
+
+the mouse moves the direciton the camera is pointing at.
+when the camera is looking near another visible camera, a timer appears and after a short time, the character can "hop" to that camera.
+
+this is the core mechanic
+
+** Access Terminals
+Throughout any level there will be 0 or more Access Terminals (ATs)
+
+A camera needs to maintain visual contact with an AT to activate it
+
+This can have different effects, like opening doors, powering cameras, or deactivating security
+
+** Obstacles
+
+there are doors, people, drones that can move around the level in fixed paths.
+
+they block view of cameras and ATs
+
+** NetSec
+
+NetSec attempts to slow the player down or catch them in 2 ways.
+
+Setting timers for a full network shutdown
+and
+also hoping through cameras trying to land on the player
+
+*** Hoping behavior
+TBD

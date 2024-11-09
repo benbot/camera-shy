@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkmyxv44fgggy"]
+
+[ext_resource type="Script" path="res://camera/camera.gd" id="1_5aor3"]
+
+[node name="Camera" type="Node3D"]
+
+[node name="pivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
+script = ExtResource("1_5aor3")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="pivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
