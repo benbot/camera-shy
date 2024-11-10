@@ -7,12 +7,15 @@ class_name Camera
 
 @export var mouse_sensitivity := 0.01
 
+signal camera_change()
+
 func get_rel_screen_pos(object: Node3D) -> Vector2:
 	var screen_pos = camera.unproject_position(object.global_position)
 	var rel = screen_pos / get_viewport().get_visible_rect().size - Vector2(0.5, 0.5)
 	return rel
 
 func _physics_process(_delta: float) -> void:
+	set_process_input(true)
 	if not camera.current:
 		return
 
@@ -28,8 +31,10 @@ func _physics_process(_delta: float) -> void:
 				maybe_cam.call_deferred("player_activate")
 
 func player_activate() -> void:
+	camera_change.emit(self)
+
+func set_current() -> void:
 	camera.current = true
-	print(camera.current)
 
 func _unhandled_input(event):
 	if not camera.current:

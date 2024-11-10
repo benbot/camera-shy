@@ -1,22 +1,158 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqchmsemncy4j"]
+[gd_scene load_steps=17 format=3 uid="uid://bqchmsemncy4j"]
 
 [ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="1_m2slc"]
+[ext_resource type="Script" path="res://game_master.gd" id="1_x25pl"]
+[ext_resource type="Shader" path="res://vhs.gdshader" id="2_bk076"]
+
+[sub_resource type="GDScript" id="GDScript_1jpkl"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func _unhandled_input(event: InputEvent) -> void:
+	$\"SubViewport\".push_input(event)
+"
+
+[sub_resource type="QuadMesh" id="QuadMesh_p5d16"]
+resource_local_to_scene = true
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_u1hon"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_642wn"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_bk076")
+shader_parameter/range = 0.0
+shader_parameter/noiseQuality = 300.0
+shader_parameter/noiseIntensity = 0.003
+shader_parameter/offsetIntensity = 0.07
+shader_parameter/colorOffsetIntensity = 0.1
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_u1hon")
+
+[sub_resource type="Animation" id="Animation_ppnah"]
+resource_name = "RESET"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vhs:surface_material_override/0:shader_parameter/noiseIntensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.003, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_b4dv7"]
+resource_name = "CHANGE"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vhs:surface_material_override/0:shader_parameter/noiseIntensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(1, 1, 1, 0),
+"points": PackedFloat32Array(0.003, 0, 0, 0, 0, 0.06, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0.003, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.0333333, 0.4, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_caxi4"]
+_data = {
+"CHANGE": SubResource("Animation_b4dv7"),
+"RESET": SubResource("Animation_ppnah")
+}
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0vtyh"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_3dtsq"]
+sky_material = SubResource("ProceduralSkyMaterial_0vtyh")
+
+[sub_resource type="Environment" id="Environment_8stiy"]
+background_mode = 2
+sky = SubResource("Sky_3dtsq")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_27nmd"]
+albedo_color = Color(0.633703, 0, 0.21529, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1gx4b"]
+albedo_color = Color(0.243477, 0.566725, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oytpn"]
+albedo_color = Color(0, 0.912303, 0.0752003, 1)
 
 [node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_1jpkl")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="Game Master" type="Node" parent="."]
+script = ExtResource("1_x25pl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, -17, -620.747, 0)
+cull_mask = 524288
+
+[node name="vhs" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+layers = 524288
+mesh = SubResource("QuadMesh_p5d16")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_642wn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D/vhs"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_caxi4")
+}
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(552, 512)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
+environment = SubResource("Environment_8stiy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport"]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
+sky_mode = 1
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+[node name="CSGBox3D2" type="CSGBox3D" parent="SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.126129, -0.35498, -3.91122)
 size = Vector3(6.11383, 0.290039, 13.455)
 
-[node name="Camera" parent="." instance=ExtResource("1_m2slc")]
+[node name="Camera" parent="SubViewport" instance=ExtResource("1_m2slc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91939, 0, 0)
 
-[node name="Camera3" parent="." instance=ExtResource("1_m2slc")]
+[node name="CSGBox3D" parent="SubViewport/Camera/pivot/Camera3D" index="0"]
+material = SubResource("StandardMaterial3D_27nmd")
+
+[node name="Camera2" parent="SubViewport" instance=ExtResource("1_m2slc")]
+transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 0, 0, -5.98752)
+
+[node name="CSGBox3D" parent="SubViewport/Camera2/pivot/Camera3D" index="0"]
+material = SubResource("StandardMaterial3D_1gx4b")
+
+[node name="Camera3" parent="SubViewport" instance=ExtResource("1_m2slc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13273, 0, 0)
 
-[node name="Camera2" parent="." instance=ExtResource("1_m2slc")]
-transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 0, 0, -5.98752)
+[node name="CSGBox3D" parent="SubViewport/Camera3/pivot/Camera3D" index="0"]
+material = SubResource("StandardMaterial3D_oytpn")
+
+[editable path="SubViewport/Camera"]
+[editable path="SubViewport/Camera2"]
+[editable path="SubViewport/Camera3"]

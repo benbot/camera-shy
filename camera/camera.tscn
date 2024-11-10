@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bkmyxv44fgggy"]
+[gd_scene load_steps=6 format=3 uid="uid://bkmyxv44fgggy"]
 
 [ext_resource type="Script" path="res://camera/camera.gd" id="1_5aor3"]
 
@@ -6,14 +6,22 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jfkip"]
 
-[node name="Camera" type="Node3D"]
+[sub_resource type="Animation" id="Animation_mvdnt"]
+resource_name = "RESET"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yd6fg"]
+_data = {
+"RESET": SubResource("Animation_mvdnt")
+}
+
+[node name="Camera" type="Node3D" groups=["camera"]]
 script = ExtResource("1_5aor3")
-mouse_sensitivity = null
 
 [node name="pivot" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
+cull_mask = 524287
 
 [node name="CSGBox3D" type="CSGBox3D" parent="pivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
@@ -28,3 +36,8 @@ shape = SubResource("BoxShape3D_yvdrv")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
 shape = SubResource("SphereShape3D_jfkip")
 target_position = Vector3(0, 0, -100)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="pivot/Camera3D"]
+libraries = {
+"": SubResource("AnimationLibrary_yd6fg")
+}

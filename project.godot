@@ -15,6 +15,14 @@ run/main_scene="res://node_3d.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="viewport"
+
+[editor]
+
+movie_writer/movie_file="/home/benbot/dev/camera-shy/movies/movie.avi"
+
 [input]
 
 fire={
