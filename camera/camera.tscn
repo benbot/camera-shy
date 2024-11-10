@@ -17,27 +17,25 @@ _data = {
 [node name="Camera" type="Node3D" groups=["camera"]]
 script = ExtResource("1_5aor3")
 
-[node name="pivot" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="pivot"]
+[node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
 cull_mask = 524287
 
-[node name="CSGBox3D" type="CSGBox3D" parent="pivot/Camera3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="pivot/Camera3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="pivot/Camera3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_yvdrv")
 
-[node name="ShapeCast3D" type="ShapeCast3D" parent="pivot/Camera3D/StaticBody3D"]
+[node name="ShapeCast3D" type="ShapeCast3D" parent="Camera3D/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
 shape = SubResource("SphereShape3D_jfkip")
 target_position = Vector3(0, 0, -100)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="pivot/Camera3D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D"]
 libraries = {
 "": SubResource("AnimationLibrary_yd6fg")
 }

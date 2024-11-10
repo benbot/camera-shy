@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://degqvhttwux42"]
+
+[ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="1_826gg"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_p5d16"]
+resource_local_to_scene = true
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_u1hon"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_642wn"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_826gg")
+shader_parameter/range = 0.0
+shader_parameter/noiseQuality = 300.0
+shader_parameter/noiseIntensity = 0.003
+shader_parameter/offsetIntensity = 0.07
+shader_parameter/colorOffsetIntensity = 0.1
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_u1hon")
+
+[sub_resource type="Animation" id="Animation_b4dv7"]
+resource_name = "CHANGE"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vhs:surface_material_override/0:shader_parameter/noiseIntensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(1, 1, 1, 0),
+"points": PackedFloat32Array(0.003, 0, 0, 0, 0, 0.06, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0.003, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.0333333, 0.4, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_ppnah"]
+resource_name = "RESET"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vhs:surface_material_override/0:shader_parameter/noiseIntensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.003, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_caxi4"]
+_data = {
+"CHANGE": SubResource("Animation_b4dv7"),
+"RESET": SubResource("Animation_ppnah")
+}
+
+[node name="vhs" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+visible = false
+layers = 524288
+mesh = SubResource("QuadMesh_p5d16")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_642wn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_caxi4")
+}

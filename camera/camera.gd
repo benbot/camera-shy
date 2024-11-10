@@ -1,11 +1,10 @@
 extends Node3D
 class_name Camera
 
-@onready var camera: Camera3D = $"./pivot/Camera3D"
-@onready var pivot: Node3D = $"./pivot"
-@onready var cast: ShapeCast3D = $"./pivot/Camera3D/StaticBody3D/ShapeCast3D"
+@onready var camera: Camera3D = $"./Camera3D"
+@onready var cast: ShapeCast3D = $"./Camera3D/StaticBody3D/ShapeCast3D"
 
-@export var mouse_sensitivity := 0.01
+@export var mouse_sensitivity := 0.007
 
 signal camera_change()
 
@@ -14,10 +13,13 @@ func get_rel_screen_pos(object: Node3D) -> Vector2:
 	var rel = screen_pos / get_viewport().get_visible_rect().size - Vector2(0.5, 0.5)
 	return rel
 
+var raw_mouse_dir = Vector2.ZERO
+
 func _physics_process(_delta: float) -> void:
-	set_process_input(true)
 	if not camera.current:
 		return
+
+	raw_mouse_dir = Vector2.ZERO
 
 	if Input.is_action_just_pressed("fire"):
 		if cast.is_colliding():
@@ -39,16 +41,17 @@ func set_current() -> void:
 func _unhandled_input(event):
 	if not camera.current:
 		return
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		camera.rotation.x = clamp(camera.rotation.x + -event.relative.y * mouse_sensitivity, -PI/2, PI/2)
+		camera.rotate_y(-event.relative.x * mouse_sensitivity)
+		camera.orthonormalize()
+		return
 	if event is InputEventKey:
 		if event.keycode == KEY_Q:
 			get_tree().quit()
+			return
 		if event.keycode == KEY_M and event.pressed:
 			if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			else:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		var x = event.relative.x if event.relative.x else 0
-		var y = event.relative.y if event.relative.x else 0
-		camera.rotate_x(-y * mouse_sensitivity)
-		pivot.rotate_y(-x * mouse_sensitivity)

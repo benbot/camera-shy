@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=3 uid="uid://bqchmsemncy4j"]
+
+[ext_resource type="Script" path="res://game_master.gd" id="1_lrdcs"]
+[ext_resource type="PackedScene" uid="uid://degqvhttwux42" path="res://vfx/vhs/vhs.tscn" id="2_iamir"]
+[ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="2_y8fho"]
+[ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="3_wyroa"]
+
+[sub_resource type="GDScript" id="GDScript_1jpkl"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func _unhandled_input(event: InputEvent) -> void:
+	$\"SubViewport\".push_input(event)
+"
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4qlgp"]
+viewport_path = NodePath("../../SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4t6dp"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_y8fho")
+shader_parameter/range = 0.0
+shader_parameter/noiseQuality = 300.0
+shader_parameter/noiseIntensity = 0.003
+shader_parameter/offsetIntensity = 0.07
+shader_parameter/colorOffsetIntensity = 0.1
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_4qlgp")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0vtyh"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_3dtsq"]
+sky_material = SubResource("ProceduralSkyMaterial_0vtyh")
+
+[sub_resource type="Environment" id="Environment_8stiy"]
+background_mode = 2
+sky = SubResource("Sky_3dtsq")
+tonemap_mode = 2
+
+[node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_1jpkl")
+
+[node name="Game Master" type="Node" parent="."]
+script = ExtResource("1_lrdcs")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+cull_mask = 524288
+
+[node name="vhs" parent="Camera3D" instance=ExtResource("2_iamir")]
+unique_name_in_owner = true
+surface_material_override/0 = SubResource("ShaderMaterial_4t6dp")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(552, 512)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
+environment = SubResource("Environment_8stiy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.126129, -0.35498, -3.91122)
+size = Vector3(6.11383, 0.290039, 13.455)
+
+[node name="Camera" parent="SubViewport" instance=ExtResource("3_wyroa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91939, 0, 0)
+
+[node name="Camera2" parent="SubViewport" instance=ExtResource("3_wyroa")]
+transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 0, 0, -5.98752)
+
+[node name="Camera3" parent="SubViewport" instance=ExtResource("3_wyroa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13273, 0, 0)
+
+[editable path="SubViewport/Camera"]
+[editable path="SubViewport/Camera2"]
+[editable path="SubViewport/Camera3"]

@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode unshaded, fog_disabled, cull_disabled;
+render_mode unshaded, fog_disabled;
 
 uniform float range : hint_range(0.0, 0.1, 0.005)= 0.05;
 uniform float noiseQuality : hint_range(0.0, 300.0, 0.1)= 250.0;
@@ -28,6 +28,7 @@ void vertex() {
 }
 
 const float saturation = 0.2;
+uniform sampler2D depth_texture : source_color, hint_depth_texture;
 void fragment()
 {
     vec2 uv = SCREEN_UV;
@@ -38,7 +39,7 @@ void fragment()
     	o *= offsetIntensity;
         uv.x += verticalBar(d, UV.y, o);
     }
-    
+
     float UVY = uv.y;
     UVY *= noiseQuality;
     UVY = float(int(UVY)) * (1.0 / noiseQuality);
@@ -47,7 +48,7 @@ void fragment()
 
     vec2 offsetR = vec2(0.009 * sin(TIME), 0.0) * colorOffsetIntensity;
     vec2 offsetG = vec2(0.0073 * (cos(TIME * 0.97)), 0.0) * colorOffsetIntensity;
-    
+
     float r = texture(SCREEN_TEXTURE, uv + offsetR).r;
     float g = texture(SCREEN_TEXTURE, uv + offsetG).g;
     float b = texture(SCREEN_TEXTURE, uv).b;
