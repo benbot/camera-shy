@@ -8,11 +8,6 @@ class_name Camera
 
 signal camera_change()
 
-func get_rel_screen_pos(object: Node3D) -> Vector2:
-	var screen_pos = camera.unproject_position(object.global_position)
-	var rel = screen_pos / get_viewport().get_visible_rect().size - Vector2(0.5, 0.5)
-	return rel
-
 var raw_mouse_dir = Vector2.ZERO
 
 func _physics_process(_delta: float) -> void:

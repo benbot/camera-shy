@@ -29,6 +29,7 @@ void vertex() {
 
 const float saturation = 0.2;
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
+uniform bool useDepth = false;
 void fragment()
 {
     vec2 uv = SCREEN_UV;

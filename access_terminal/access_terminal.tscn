@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bf3bie4safvqr"]
+
+[ext_resource type="PackedScene" uid="uid://iwpnnl14ptxg" path="res://assets/office_desk.glb" id="1_mmaio"]
+[ext_resource type="PackedScene" uid="uid://x1vt8r7cq7vi" path="res://assets/crt_monitor.glb" id="2_cqk0k"]
+[ext_resource type="PackedScene" uid="uid://baptrt3ths0xx" path="res://assets/computer_keyboard_01.glb" id="3_4tdxl"]
+
+[node name="AccessTerminal" type="Node3D"]
+
+[node name="office_desk2" parent="." instance=ExtResource("1_mmaio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0948508, 0, -0.0150893)
+
+[node name="office_desk" parent="office_desk2" index="0"]
+layers = 262144
+
+[node name="crt_monitor2" parent="." instance=ExtResource("2_cqk0k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0557374, 0.716899, -0.14409)
+
+[node name="crt_monitor" parent="crt_monitor2" index="0"]
+layers = 262144
+
+[node name="computer_keyboard_012" parent="." instance=ExtResource("3_4tdxl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0256141, 0.739078, 0.256031)
+
+[node name="computer_keyboard_01" parent="computer_keyboard_012" index="0"]
+layers = 262144
+
+[editable path="office_desk2"]
+[editable path="crt_monitor2"]
+[editable path="computer_keyboard_012"]
