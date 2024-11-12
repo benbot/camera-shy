@@ -19,7 +19,7 @@ script = ExtResource("1_5aor3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
-cull_mask = 524287
+cull_mask = 31775
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)

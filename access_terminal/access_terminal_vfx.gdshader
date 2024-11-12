@@ -28,8 +28,7 @@ void vertex() {
 }
 
 const float saturation = 0.2;
-uniform sampler2D depth_texture : source_color, hint_depth_texture;
-uniform bool useDepth = false;
+uniform sampler2D depth_texture : source_color;
 void fragment()
 {
     vec2 uv = SCREEN_UV;
@@ -55,8 +54,12 @@ void fragment()
     float b = texture(SCREEN_TEXTURE, uv).b;
     vec4 tex = vec4(r, g, b, 1.0);
     ALBEDO = tex.rgb;
+	//ALBEDO = vec3(0.0);
 
-	vec4 color = texture(SCREEN_TEXTURE, uv);
-	//ALBEDO=vec3(1.0);
-	ALPHA = color.a;
+	vec4 color = texture(SCREEN_TEXTURE, vec2(UV.x, -UV.y));
+	float depth = texture(depth_texture, SCREEN_UV).r;
+	float tex_sum = clamp(tex.r + tex.g + tex.b, 0.0, 1.0);
+	float mask = step(0.1, depth);
+//	ALBEDO = vec3(depth / 5.0);
+	ALPHA = color.a;// - (depth * 100.0);
 }

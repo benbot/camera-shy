@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqchmsemncy4j"]
+[gd_scene load_steps=13 format=3 uid="uid://bqchmsemncy4j"]
 
 [ext_resource type="Script" path="res://game_master.gd" id="1_lrdcs"]
-[ext_resource type="PackedScene" uid="uid://degqvhttwux42" path="res://vfx/vhs/vhs.tscn" id="2_iamir"]
+[ext_resource type="PackedScene" uid="uid://dau4gjegebxxp" path="res://fake.tscn" id="2_75c4a"]
 [ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="2_y8fho"]
 [ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="3_wyroa"]
+[ext_resource type="PackedScene" uid="uid://bf3bie4safvqr" path="res://access_terminal/access_terminal.tscn" id="4_mawt8"]
 
 [sub_resource type="GDScript" id="GDScript_1jpkl"]
 script/source = "extends Node3D
@@ -11,9 +12,8 @@ script/source = "extends Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-	$\"SubViewport\".size = get_viewport().size
-
+	var vp_size: Vector2 = get_viewport().size
+	$\"SubViewport\".size = vp_size
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -23,15 +23,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	$\"SubViewport\".push_input(event)
 "
 
-[sub_resource type="QuadMesh" id="QuadMesh_k01lx"]
+[sub_resource type="QuadMesh" id="QuadMesh_bb5r1"]
 resource_local_to_scene = true
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4qlgp"]
-viewport_path = NodePath("../../SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_nuhim"]
+viewport_path = NodePath("SubViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4t6dp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ytpaw"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_y8fho")
@@ -41,7 +41,7 @@ shader_parameter/noiseIntensity = 0.003
 shader_parameter/offsetIntensity = 0.07
 shader_parameter/colorOffsetIntensity = 0.1
 shader_parameter/useDepth = false
-shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_4qlgp")
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_nuhim")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0vtyh"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -58,18 +58,24 @@ tonemap_mode = 2
 [node name="Node3D" type="Node3D"]
 script = SubResource("GDScript_1jpkl")
 
-[node name="Game Master" type="Node" parent="."]
+[node name="Game Master" type="Node" parent="." groups=["gamemaster"]]
 script = ExtResource("1_lrdcs")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="CameraSetup" type="Node3D" parent="."]
+
+[node name="Main" type="Camera3D" parent="CameraSetup"]
 cull_mask = 524288
 
-[node name="vhs" parent="Camera3D" instance=ExtResource("2_iamir")]
-unique_name_in_owner = true
-mesh = SubResource("QuadMesh_k01lx")
-surface_material_override/0 = SubResource("ShaderMaterial_4t6dp")
+[node name="vhs" parent="CameraSetup/Main" instance=ExtResource("2_75c4a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.2746)
+mesh = SubResource("QuadMesh_bb5r1")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_ytpaw")
+vp_path = NodePath("../../../SubViewport")
+surface_material_override/0 = SubResource("ShaderMaterial_ytpaw")
 
 [node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
 handle_input_locally = false
 size = Vector2i(552, 512)
 
@@ -85,8 +91,14 @@ sky_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.126129, -0.35498, -3.91122)
 size = Vector3(6.11383, 0.290039, 13.455)
 
+[node name="AccessTerminal" parent="SubViewport" instance=ExtResource("4_mawt8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+
 [node name="Camera" parent="SubViewport" instance=ExtResource("3_wyroa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91939, 0, 0)
+
+[node name="Camera3D" parent="SubViewport/Camera" index="0"]
+current = true
 
 [node name="Camera2" parent="SubViewport" instance=ExtResource("3_wyroa")]
 transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 0, 0, -5.98752)

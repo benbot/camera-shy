@@ -1,4 +1,7 @@
-shader_type spatial;
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://kerda10agudc"]
+
+[sub_resource type="Shader" id="Shader_2mkyy"]
+code = "shader_type spatial;
 
 render_mode unshaded, fog_disabled;
 
@@ -55,8 +58,22 @@ void fragment()
     float b = texture(SCREEN_TEXTURE, uv).b;
     vec4 tex = vec4(r, g, b, 1.0);
     ALBEDO = tex.rgb;
+	vec4 color = texture(SCREEN_TEXTURE, vec2(UV.x, -UV.y));
 
-	vec4 color = texture(SCREEN_TEXTURE, uv);
-	//ALBEDO=vec3(1.0);
-	ALPHA = color.a;
-}
+
+	float depth = texture(depth_texture, SCREEN_UV).r;
+	//ALBEDO = vec3(depth * 3.0);
+	float mask = step(0.1, depth);
+	ALPHA = color.a - (depth * 100.0);
+}"
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_2mkyy")
+shader_parameter/range = 0.05
+shader_parameter/noiseQuality = 250.0
+shader_parameter/noiseIntensity = 0.01
+shader_parameter/offsetIntensity = 0.03
+shader_parameter/colorOffsetIntensity = 1.3
+shader_parameter/useDepth = false

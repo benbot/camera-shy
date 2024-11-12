@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://degqvhttwux42"]
+[gd_scene load_steps=9 format=3 uid="uid://degqvhttwux42"]
 
 [ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="1_826gg"]
 
@@ -19,7 +19,21 @@ shader_parameter/noiseQuality = 300.0
 shader_parameter/noiseIntensity = 0.003
 shader_parameter/offsetIntensity = 0.07
 shader_parameter/colorOffsetIntensity = 0.1
+shader_parameter/useDepth = false
 shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_u1hon")
+
+[sub_resource type="GDScript" id="GDScript_6b73b"]
+script/source = "extends MeshInstance3D
+
+@export var vp_path: NodePath
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	show()
+	var shader: ShaderMaterial = get_surface_override_material(0)
+	var vp_tex = get_node(vp_path).get_texture()
+	shader.set_shader_parameter(\"SCREEN_TEXTURE\", vp_tex)
+"
 
 [sub_resource type="Animation" id="Animation_b4dv7"]
 resource_name = "CHANGE"
@@ -63,6 +77,7 @@ layers = 524288
 mesh = SubResource("QuadMesh_p5d16")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_642wn")
+script = SubResource("GDScript_6b73b")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../..")
