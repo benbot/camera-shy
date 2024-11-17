@@ -1,10 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkmyxv44fgggy"]
+[gd_scene load_steps=7 format=3 uid="uid://bkmyxv44fgggy"]
 
 [ext_resource type="Script" path="res://camera/camera.gd" id="1_5aor3"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_yvdrv"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_jfkip"]
+[ext_resource type="PackedScene" uid="uid://d3ng5y237qeim" path="res://assets/camera.blend" id="2_vb34w"]
 
 [sub_resource type="Animation" id="Animation_mvdnt"]
 resource_name = "RESET"
@@ -14,28 +11,77 @@ _data = {
 "RESET": SubResource("Animation_mvdnt")
 }
 
-[node name="Camera" type="Node3D" groups=["camera"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_yvdrv"]
+size = Vector3(2.13928, 1.76062, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jfkip"]
+radius = 0.25
+
+[node name="Camera" type="StaticBody3D" groups=["camera"]]
 script = ExtResource("1_5aor3")
+mouse_sensitivity = null
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
 cull_mask = 31775
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.538753)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/StaticBody3D"]
-shape = SubResource("BoxShape3D_yvdrv")
-
-[node name="ShapeCast3D" type="ShapeCast3D" parent="Camera3D/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
-shape = SubResource("SphereShape3D_jfkip")
-target_position = Vector3(0, 0, -100)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D"]
 libraries = {
 "": SubResource("AnimationLibrary_yd6fg")
 }
+
+[node name="camera" parent="Camera3D" instance=ExtResource("2_vb34w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.068283)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0368042, 0.0411694, 0)
+shape = SubResource("BoxShape3D_yvdrv")
+
+[node name="ui" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="hackhint" type="Label" parent="ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 500.0
+offset_top = 539.0
+offset_right = 613.0
+offset_bottom = 608.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 28
+text = "Hold E to Hack"
+
+[node name="camjumphint" type="Label" parent="ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 500.0
+offset_top = 539.0
+offset_right = 613.0
+offset_bottom = 608.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 28
+text = "Click to change camera"
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
+shape = SubResource("SphereShape3D_jfkip")
+target_position = Vector3(0, 0, -100)

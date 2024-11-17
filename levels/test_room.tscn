@@ -1,0 +1,155 @@
+[gd_scene load_steps=14 format=3 uid="uid://bqchmsemncy4j"]
+
+[ext_resource type="Script" path="res://level_base.gd" id="1_y612i"]
+[ext_resource type="PackedScene" uid="uid://drra0d30toj3h" path="res://game_master.tscn" id="2_a8fyj"]
+[ext_resource type="PackedScene" uid="uid://ddvpl337k5osp" path="res://camera_setup.tscn" id="3_8kt64"]
+[ext_resource type="PackedScene" uid="uid://bf3bie4safvqr" path="res://access_terminal/access_terminal.tscn" id="4_wv2ci"]
+[ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="5_r2frf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0vtyh"]
+sky_top_color = Color(0.088637, 0.119542, 0.142887, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+sky_curve = 0.00468749
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_curve = 4.04401e-05
+
+[sub_resource type="Sky" id="Sky_3dtsq"]
+sky_material = SubResource("ProceduralSkyMaterial_0vtyh")
+
+[sub_resource type="Environment" id="Environment_8stiy"]
+background_mode = 2
+sky = SubResource("Sky_3dtsq")
+tonemap_mode = 2
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_0ybyt"]
+albedo_color = Color(0.2058, 0.2016, 0.21, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57ess"]
+albedo_color = Color(0.00827983, 0.00770359, 0.0114607, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4kxu"]
+size = Vector3(7.3904, 1.4032, 1)
+
+[sub_resource type="Shader" id="Shader_jkmqp"]
+code = "shader_type canvas_item;
+
+void vertex() {
+
+	// Called fo every vertex the material is visible on.
+}
+
+void fragment() {
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j5eft"]
+shader = SubResource("Shader_jkmqp")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_y612i")
+
+[node name="Game Master" parent="." instance=ExtResource("2_a8fyj")]
+
+[node name="CameraSetup" parent="." instance=ExtResource("3_8kt64")]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(552, 512)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
+environment = SubResource("Environment_8stiy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.126129, -0.35498, -3.91122)
+size = Vector3(6.11383, 0.290039, 13.455)
+material = SubResource("ORMMaterial3D_0ybyt")
+
+[node name="AccessTerminal" parent="SubViewport" instance=ExtResource("4_wv2ci")]
+transform = Transform3D(0.0299803, 0, 0.99955, 0, 1, 0, -0.99955, 0, 0.0299803, -2.59066, -0.518675, -5.92138)
+
+[node name="Camera" parent="SubViewport" instance=ExtResource("5_r2frf")]
+transform = Transform3D(0.783086, 0, -0.621913, 0, 1, 0, 0.621913, 0, 0.783086, -1.91939, 0, 0)
+
+[node name="Camera2" parent="SubViewport" instance=ExtResource("5_r2frf")]
+transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 1.96801, 0, -7.97799)
+
+[node name="Camera3D" parent="SubViewport/Camera2" index="0"]
+current = true
+
+[node name="Camera3" parent="SubViewport" instance=ExtResource("5_r2frf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13273, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0.8381, 0, 0.545517, 0, 1, 0, -0.545517, 0, 0.8381, -1.80624, 0.149428, -3.38184)
+size = Vector3(7.32788, 1.73621, 1)
+material = SubResource("StandardMaterial3D_57ess")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBox3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBox3D/StaticBody3D"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -0.000344038, 0.201599, -1.66893e-06)
+shape = SubResource("BoxShape3D_c4kxu")
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.341176, 0, 1)
+
+[node name="Label" type="Label" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 200
+text = "YOU WIN!!!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+process_mode = 4
+material = SubResource("ShaderMaterial_j5eft")
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(1, 1, 1, 0.690196)
+
+[editable path="SubViewport/Camera"]
+[editable path="SubViewport/Camera2"]
+[editable path="SubViewport/Camera3"]

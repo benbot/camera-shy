@@ -11,12 +11,23 @@ when the camera is looking near another visible camera, a timer appears and afte
 
 this is the core mechanic
 
+*** Camera movement
+The camera movement should lag behind player input a little bit.
+This will give a better sense of remotely controlling an electronic device
+
 ** Access Terminals
 Throughout any level there will be 0 or more Access Terminals (ATs)
 
 A camera needs to maintain visual contact with an AT to activate it
 
 This can have different effects, like opening doors, powering cameras, or deactivating security
+
+*** Controls
+The player will need to hold down some button (currently E) to hack into a terminal
+The terminal will become more hacked over some amount of time.
+
+The player MUST maintian line of sight to the terminal at all times
+If the player loses line of sight, they will need to restart the entire hack over again
 
 ** Obstacles
 

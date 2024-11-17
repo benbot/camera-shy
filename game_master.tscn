@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://drra0d30toj3h"]
+
+[ext_resource type="Script" path="res://game_master.gd" id="1_3j6f8"]
+[ext_resource type="AudioStream" uid="uid://df5o4648w8q4c" path="res://assets/sounds/Camera Switch FX 4.ogg" id="2_es8gc"]
+
+[node name="Game Master" type="Node" groups=["gamemaster"]]
+script = ExtResource("1_3j6f8")
+
+[node name="CameraSwitchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_es8gc")

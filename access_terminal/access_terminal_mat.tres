@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b53jvou7q8mfx"]
+
+[ext_resource type="Shader" path="res://assets/ps2-corruption.gdshader" id="1_mrgdn"]
+
+[sub_resource type="Gradient" id="Gradient_w3j18"]
+offsets = PackedFloat32Array(0, 0.377358, 0.783648, 1)
+colors = PackedColorArray(0, 1, 0, 1, 0.883707, 0, 0.276164, 1, 1.92523e-07, 0.925468, 0.616989, 1, 0.87779, 0, 0.197327, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1oap5"]
+gradient = SubResource("Gradient_w3j18")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mrgdn")
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/uv_scrolling_velocity = Vector2(1, 0)
+shader_parameter/vertex_snapping_offset = 0.8
+shader_parameter/corruption_amount = 0.0
+shader_parameter/corruption_seed = 1.0
+shader_parameter/corrupt_red = true
+shader_parameter/corrupt_green = true
+shader_parameter/corrupt_blue = true
+shader_parameter/checker = true
+shader_parameter/checker_size = Vector2(200, 200)
+shader_parameter/checker_offset = 2.0
+shader_parameter/albedo = SubResource("GradientTexture2D_1oap5")

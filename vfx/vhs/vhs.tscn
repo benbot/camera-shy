@@ -27,6 +27,8 @@ script/source = "extends MeshInstance3D
 
 @export var vp_path: NodePath
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	show()

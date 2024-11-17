@@ -1,12 +1,12 @@
 shader_type spatial;
-render_mode vertex_lighting, skip_vertex_transform, 
+render_mode vertex_lighting, skip_vertex_transform,
             specular_schlick_ggx, diffuse_lambert_wrap, shadows_disabled;
 
 uniform vec4 modulate: source_color = vec4(1.0);
 uniform sampler2D albedo: hint_default_black, filter_nearest;
 uniform vec2 uv_scrolling_velocity = vec2(0.0);
 
-const float vertex_snapping_offset = 0.8;
+uniform float vertex_snapping_offset: hint_range(0.1, 0.9) = 0.8;
 
 
 varying float vertex_distance;
@@ -21,7 +21,7 @@ uniform vec2 checker_size = vec2(16.0, 16.0);
 uniform float checker_offset : hint_range(2.0, 10.0) = 2.0;
 
 void vertex() {
-    //UV += uv_scrolling_velocity * TIME;
+    UV += uv_scrolling_velocity * corruption_amount;
 
     VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
 
@@ -30,7 +30,7 @@ void vertex() {
 
     float projection_w = (PROJECTION_MATRIX * vec4(VERTEX, 1.0)).w;
     VERTEX = round(VERTEX / projection_w * snap_i) / snap_i * projection_w;
-    
+
     NORMAL = (MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 
     vertex_distance = length((MODEL_MATRIX * vec4(VERTEX, 1.0)));
@@ -54,7 +54,7 @@ float get_dither_brightness(vec3 given_color, vec4 fragcoord) {
     );
 
     float dithering = thresholdMatrix[x * 4 + y];
-    
+
     if ((calculated_brightness - 0.2 < dithering) && (vertex_distance < 60.)) {
         return ((dithering - 0.5) * 0.25) + 1.0;
     } else {
@@ -62,7 +62,7 @@ float get_dither_brightness(vec3 given_color, vec4 fragcoord) {
     }
 }
 
-//these functions are all magic to me, trust me, they generate noise 
+//these functions are all magic to me, trust me, they generate noise
 
 float randomr(vec2 uv) {
 	return fract(sin(dot(uv, vec2(corruption_seed, 78.233))) * 216.5453);
@@ -84,12 +84,12 @@ void fragment() {
 
     ALPHA = texture(albedo, uv).a * modulate.a;
     ALPHA_SCISSOR_THRESHOLD = 0.1;
-	
+
 
 	// Get size of texture in pixels
 	float size_x = float(textureSize(albedo, 0).x);
 	float size_y = float(textureSize(albedo, 0).y);
-    
+
 	float checker_pattern;
 	// Add a checker pattern to the image
 	if (checker){
@@ -104,22 +104,23 @@ void fragment() {
 	vec2 UVr = vec2(floor(uv.x*size_x)/size_x, floor(uv.y*size_y)/size_y);
 	//this is the offset, honestly, could potentially be useless
 	vec2 corruption_offset = vec2(corruption_amount * checker_pattern, corruption_seed );
-	
+
 	vec3 corrupt = vec3(pixelColor.r,pixelColor.g,pixelColor.b);
-	
+
 	if (corrupt_red){
 		corrupt.r = step(corruption_amount, randomr(UVr * corruption_offset));
 	}
-	
+
 	if (corrupt_green){
 		corrupt.g = step(corruption_amount, randomg(UVr * corruption_offset));
 	}
-	
+
 	if (corrupt_blue){
 		corrupt.b = step(corruption_amount, randomb(UVr * corruption_offset));
 	}
-	 
+
     // applies the vertex colors and corruption effects.
 	vec3 corrupt_texture_rgba = ((vec3(min(corrupt.r, pixelColor.r), min(corrupt.g, pixelColor.g), min(corrupt.b, pixelColor.b)) * COLOR.rgb) * modulate.rgb) * get_dither_brightness(texture_rgba.rgb, FRAGCOORD);
     ALBEDO = corrupt_texture_rgba.rgb;
+	EMISSION = ALBEDO / 5.0;
 }

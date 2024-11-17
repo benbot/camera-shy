@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://cxwtsl7nlsfms"]
+
+[ext_resource type="Script" path="res://level_base.gd" id="1_jy5vw"]
+[ext_resource type="PackedScene" uid="uid://drra0d30toj3h" path="res://game_master.tscn" id="2_qijsg"]
+[ext_resource type="PackedScene" uid="uid://ddvpl337k5osp" path="res://camera_setup.tscn" id="3_pl1wp"]
+[ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="4_o1suq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rbv78"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_bky8c"]
+sky_material = SubResource("ProceduralSkyMaterial_rbv78")
+
+[sub_resource type="Environment" id="Environment_vos3k"]
+background_mode = 2
+sky = SubResource("Sky_bky8c")
+tonemap_mode = 2
+
+[node name="Level1" type="Node3D"]
+script = ExtResource("1_jy5vw")
+
+[node name="Game Master" parent="." instance=ExtResource("2_qijsg")]
+
+[node name="CameraSetup" parent="." instance=ExtResource("3_pl1wp")]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
+environment = SubResource("Environment_vos3k")
+
+[node name="Camera" parent="SubViewport" instance=ExtResource("4_o1suq")]
+mouse_sensitivity = null
+
+[node name="Camera3D" parent="SubViewport/Camera" index="0"]
+current = true
+
+[editable path="SubViewport/Camera"]

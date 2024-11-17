@@ -1,56 +1,50 @@
-[gd_scene load_steps=8 format=3 uid="uid://bf3bie4safvqr"]
+[gd_scene load_steps=7 format=3 uid="uid://bf3bie4safvqr"]
 
+[ext_resource type="Script" path="res://access_terminal/access_terminal.gd" id="1_c7xy0"]
 [ext_resource type="PackedScene" uid="uid://iwpnnl14ptxg" path="res://assets/office_desk.glb" id="1_mmaio"]
 [ext_resource type="PackedScene" uid="uid://x1vt8r7cq7vi" path="res://assets/crt_monitor.glb" id="2_cqk0k"]
 [ext_resource type="PackedScene" uid="uid://baptrt3ths0xx" path="res://assets/computer_keyboard_01.glb" id="3_4tdxl"]
-[ext_resource type="Shader" path="res://assets/ps2-corruption.gdshader" id="3_43g8s"]
+[ext_resource type="Material" uid="uid://b53jvou7q8mfx" path="res://access_terminal/access_terminal_mat.tres" id="3_q2fl1"]
 
-[sub_resource type="Gradient" id="Gradient_w3j18"]
-offsets = PackedFloat32Array(0, 0.47673, 0.783648, 1)
-colors = PackedColorArray(0, 1, 0, 1, 0.883707, 0, 0.276164, 1, 0, 0.90466, 0.818804, 1, 1, 1, 1, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_3jl4l"]
+size = Vector3(0.626709, 0.573273, 0.642456)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_1oap5"]
-gradient = SubResource("Gradient_w3j18")
+[node name="AccessTerminal" type="StaticBody3D" groups=["access_terminal"]]
+script = ExtResource("1_c7xy0")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k0lqy"]
-render_priority = 0
-shader = ExtResource("3_43g8s")
-shader_parameter/modulate = Color(1, 1, 1, 1)
-shader_parameter/uv_scrolling_velocity = Vector2(0.07, 0)
-shader_parameter/corruption_amount = 0.0
-shader_parameter/corruption_seed = 1.0
-shader_parameter/corrupt_red = false
-shader_parameter/corrupt_green = false
-shader_parameter/corrupt_blue = false
-shader_parameter/checker = true
-shader_parameter/checker_size = Vector2(200, 200)
-shader_parameter/checker_offset = 2.0
-shader_parameter/albedo = SubResource("GradientTexture2D_1oap5")
-
-[node name="AccessTerminal" type="Node3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.919137, -0.341161, 0.196968, 0, 0.499998, 0.866027, -0.393938, 0.795997, -0.459567, 0, 0, 0)
+shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.813992, 0.0142083, 0.580703, -0.0174524, 0.999848, 0, -0.580615, -0.0101347, 0.814116, 2.144, 0.882, 2.291)
+current = true
 
 [node name="office_desk2" parent="." instance=ExtResource("1_mmaio")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0948508, 0, -0.0150893)
 
-[node name="office_desk" parent="office_desk2" index="0"]
-layers = 262144
+[node name="office_desk" parent="office_desk2" index="0" groups=["meshes"]]
+layers = 2
+surface_material_override/0 = ExtResource("3_q2fl1")
 
 [node name="crt_monitor2" parent="." instance=ExtResource("2_cqk0k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0557374, 0.716899, -0.14409)
 
-[node name="crt_monitor" parent="crt_monitor2" index="0"]
+[node name="crt_monitor" parent="crt_monitor2" index="0" groups=["meshes"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00269455, 0)
-layers = 262144
-surface_material_override/0 = SubResource("ShaderMaterial_k0lqy")
+layers = 2
+surface_material_override/0 = ExtResource("3_q2fl1")
 
 [node name="computer_keyboard_012" parent="." instance=ExtResource("3_4tdxl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0256141, 0.739078, 0.256031)
 
-[node name="computer_keyboard_01" parent="computer_keyboard_012" index="0"]
-layers = 262144
+[node name="computer_keyboard_01" parent="computer_keyboard_012" index="0" groups=["meshes"]]
+layers = 2
+surface_material_override/0 = ExtResource("3_q2fl1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0419518, 0.973069, -0.178772)
+shape = SubResource("BoxShape3D_3jl4l")
 
 [editable path="office_desk2"]
 [editable path="crt_monitor2"]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc7t20gnyyy3l"]
+
+[ext_resource type="Script" path="res://doors/simple_door/simple_door.gd" id="1_7q7rl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s7klw"]
+size = Vector3(2.54834, 2.68079, 1)
+
+[node name="SimpleDoor" type="StaticBody3D"]
+script = ExtResource("1_7q7rl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.578186, 0.664978, 0)
+size = Vector3(2.15637, 2.32996, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.560792, 0.639126, 0)
+shape = SubResource("BoxShape3D_s7klw")

@@ -4,3 +4,4 @@
 /movies/
 *.zip
 #*.#
+/dist/
