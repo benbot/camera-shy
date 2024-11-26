@@ -99,7 +99,6 @@ shadow_enabled = true
 
 [node name="Camera" parent="SubViewport" instance=ExtResource("2_f0dta")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.887191, 5.10772)
-mouse_sensitivity = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
 transform = Transform3D(0.541047, 0, 0, 0, 3.99729, 0, 0, 0, 1, -2.88697, 0.692489, 2.39827)

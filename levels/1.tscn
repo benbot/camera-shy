@@ -31,7 +31,6 @@ handle_input_locally = false
 environment = SubResource("Environment_vos3k")
 
 [node name="Camera" parent="SubViewport" instance=ExtResource("4_o1suq")]
-mouse_sensitivity = null
 
 [node name="Camera3D" parent="SubViewport/Camera" index="0"]
 current = true
