@@ -1,7 +1,9 @@
 extends StaticBody3D
 
 func open():
-  show()
+  collision_layer = 0
+  hide()
 
 func close():
-  hide()
+  collision_layer = 1
+  show()

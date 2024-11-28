@@ -21,7 +21,7 @@ uniform vec2 checker_size = vec2(16.0, 16.0);
 uniform float checker_offset : hint_range(2.0, 10.0) = 2.0;
 
 void vertex() {
-    UV += uv_scrolling_velocity * corruption_amount;
+    UV += uv_scrolling_velocity * TIME * corruption_amount;
 
     VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
 
@@ -76,6 +76,8 @@ float randomb(vec2 uv) {
 	return fract(sin(dot(uv, vec2(corruption_seed - 12.9898, 78.233))) * 246.5453);
 }
 
+uniform float emission_scalar = 5.0;
+
 void fragment() {
     vec2 uv = UV / VERTEX.z;
 
@@ -122,5 +124,5 @@ void fragment() {
     // applies the vertex colors and corruption effects.
 	vec3 corrupt_texture_rgba = ((vec3(min(corrupt.r, pixelColor.r), min(corrupt.g, pixelColor.g), min(corrupt.b, pixelColor.b)) * COLOR.rgb) * modulate.rgb) * get_dither_brightness(texture_rgba.rgb, FRAGCOORD);
     ALBEDO = corrupt_texture_rgba.rgb;
-	EMISSION = ALBEDO / 5.0;
+	EMISSION = ALBEDO / emission_scalar;
 }

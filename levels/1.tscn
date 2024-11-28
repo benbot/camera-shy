@@ -1,21 +1,52 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxwtsl7nlsfms"]
+[gd_scene load_steps=16 format=3 uid="uid://cxwtsl7nlsfms"]
 
 [ext_resource type="Script" path="res://level_base.gd" id="1_jy5vw"]
 [ext_resource type="PackedScene" uid="uid://drra0d30toj3h" path="res://game_master.tscn" id="2_qijsg"]
 [ext_resource type="PackedScene" uid="uid://ddvpl337k5osp" path="res://camera_setup.tscn" id="3_pl1wp"]
+[ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="4_m8tmx"]
 [ext_resource type="PackedScene" uid="uid://bkmyxv44fgggy" path="res://camera/camera.tscn" id="4_o1suq"]
+[ext_resource type="PackedScene" uid="uid://bjgm84wb6jhus" path="res://assets/level1.blend" id="5_ma6ia"]
+[ext_resource type="PackedScene" uid="uid://bf3bie4safvqr" path="res://access_terminal/access_terminal.tscn" id="5_qcnk7"]
+[ext_resource type="PackedScene" uid="uid://dc7t20gnyyy3l" path="res://doors/simple_door/simple_door.tscn" id="6_j8dtl"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rbv78"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="QuadMesh" id="QuadMesh_1ohfr"]
+resource_local_to_scene = true
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pcp8s"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vhehd"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_m8tmx")
+shader_parameter/range = 0.0
+shader_parameter/noiseQuality = 300.0
+shader_parameter/noiseIntensity = 0.003
+shader_parameter/offsetIntensity = 0.07
+shader_parameter/colorOffsetIntensity = 0.1
+shader_parameter/useDepth = false
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_pcp8s")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tsuip"]
+sky_top_color = Color(0.190234, 0.233818, 0.294432, 1)
+sky_horizon_color = Color(0.0146239, 0.157176, 0.182665, 1)
+sky_curve = 0.487351
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.00289865, 0.119565, 0.15372, 1)
 
 [sub_resource type="Sky" id="Sky_bky8c"]
-sky_material = SubResource("ProceduralSkyMaterial_rbv78")
+sky_material = SubResource("ProceduralSkyMaterial_tsuip")
 
 [sub_resource type="Environment" id="Environment_vos3k"]
 background_mode = 2
 sky = SubResource("Sky_bky8c")
 tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icdmf"]
+transparency = 1
+albedo_color = Color(0.16, 0, 0.104, 0.686275)
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_jy5vw")
@@ -24,15 +55,70 @@ script = ExtResource("1_jy5vw")
 
 [node name="CameraSetup" parent="." instance=ExtResource("3_pl1wp")]
 
+[node name="vhs" parent="CameraSetup/Main" index="0"]
+mesh = SubResource("QuadMesh_1ohfr")
+surface_material_override/0 = SubResource("ShaderMaterial_vhehd")
+
 [node name="SubViewport" type="SubViewport" parent="."]
 handle_input_locally = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
 environment = SubResource("Environment_vos3k")
 
-[node name="Camera" parent="SubViewport" instance=ExtResource("4_o1suq")]
+[node name="Camera1" parent="SubViewport" instance=ExtResource("4_o1suq")]
+transform = Transform3D(1, 0, 0, 0, 0.953864, 0.30024, 0, -0.30024, 0.953864, -0.178381, 6.33693, 7.71813)
 
-[node name="Camera3D" parent="SubViewport/Camera" index="0"]
+[node name="Camera3D" parent="SubViewport/Camera1" index="0"]
 current = true
 
-[editable path="SubViewport/Camera"]
+[node name="camera" parent="SubViewport/Camera1/Camera3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Cube" parent="SubViewport/Camera1/Camera3D/camera" index="0"]
+surface_material_override/0 = null
+
+[node name="Camera2" parent="SubViewport" instance=ExtResource("4_o1suq")]
+transform = Transform3D(-0.0338524, 0.305606, -0.951556, 0.000196749, 0.952104, 0.305775, 0.999427, 0.010164, -0.0322911, -8.14974, 6.33693, -15.9746)
+
+[node name="Camera3" parent="SubViewport" instance=ExtResource("4_o1suq")]
+transform = Transform3D(-0.0300849, -0.300104, 0.953432, 2.65188e-09, 0.953864, 0.30024, -0.999547, 0.00903269, -0.028697, 27.7224, 6.33693, -15.9746)
+
+[node name="Camera4" parent="SubViewport" instance=ExtResource("4_o1suq")]
+transform = Transform3D(-0.993742, 0.0335351, -0.106541, 3.58278e-09, 0.953864, 0.30024, 0.111694, 0.298361, -0.947895, -0.963141, 6.33693, -31.5403)
+
+[node name="AccessTerminal" parent="SubViewport" instance=ExtResource("5_qcnk7")]
+transform = Transform3D(-2.22714, 0, 0.000955345, 0, 2.22759, 0, -0.00139933, 0, -1.52051, 9.39568, 0.0399992, -11.8403)
+
+[node name="SimpleDoor" parent="SubViewport" instance=ExtResource("6_j8dtl")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -1.82056, -1.90735e-06, -27.1961)
+
+[node name="MeshInstance3D" parent="SubViewport/SimpleDoor" index="1"]
+transform = Transform3D(14.888, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0, 0.698773, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_icdmf")
+
+[node name="SimpleDoor2" parent="SubViewport" instance=ExtResource("6_j8dtl")]
+transform = Transform3D(8.57352, 0, 0, 0, 5, 0, 0, 0, 1.75, -0.387865, -1.90735e-06, -4.63863)
+
+[node name="MeshInstance3D" parent="SubViewport/SimpleDoor2" index="1"]
+transform = Transform3D(2.15964, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0, 0.996656, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_icdmf")
+
+[node name="AccessTerminal" parent="." instance=ExtResource("5_qcnk7")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -0.310947, 0.136443, -0.628009)
+
+[node name="level1" parent="." instance=ExtResource("5_ma6ia")]
+transform = Transform3D(4.00631, 0, 0, 0, 2.21503, 0, 0, 0, 2.96303, -0.157121, -9.53674e-07, 6.58504)
+
+[node name="Plane" parent="level1" index="0"]
+transform = Transform3D(1.99837, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0281026, 0)
+
+[connection signal="activated" from="SubViewport/AccessTerminal" to="SubViewport/SimpleDoor" method="open"]
+[connection signal="deactivated" from="SubViewport/AccessTerminal" to="SubViewport/SimpleDoor" method="close"]
+[connection signal="activated" from="AccessTerminal" to="SubViewport/SimpleDoor2" method="open"]
+
+[editable path="CameraSetup"]
+[editable path="SubViewport/Camera1"]
+[editable path="SubViewport/Camera1/Camera3D/camera"]
+[editable path="SubViewport/SimpleDoor"]
+[editable path="SubViewport/SimpleDoor2"]
+[editable path="level1"]

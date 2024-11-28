@@ -11,14 +11,11 @@ size = Vector3(0.626709, 0.573273, 0.642456)
 
 [node name="AccessTerminal" type="StaticBody3D" groups=["access_terminal"]]
 script = ExtResource("1_c7xy0")
+corruption_time = 1.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.919137, -0.341161, 0.196968, 0, 0.499998, 0.866027, -0.393938, 0.795997, -0.459567, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.813992, 0.0142083, 0.580703, -0.0174524, 0.999848, 0, -0.580615, -0.0101347, 0.814116, 2.144, 0.882, 2.291)
-current = true
 
 [node name="office_desk2" parent="." instance=ExtResource("1_mmaio")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0948508, 0, -0.0150893)

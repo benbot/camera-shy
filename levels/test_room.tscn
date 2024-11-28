@@ -31,7 +31,7 @@ albedo_color = Color(0.00827983, 0.00770359, 0.0114607, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4kxu"]
 size = Vector3(7.3904, 1.4032, 1)
 
-[sub_resource type="Shader" id="Shader_jkmqp"]
+[sub_resource type="Shader" id="Shader_1qcew"]
 code = "shader_type canvas_item;
 
 void vertex() {
@@ -49,7 +49,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j5eft"]
-shader = SubResource("Shader_jkmqp")
+shader = SubResource("Shader_1qcew")
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_y612i")
@@ -78,17 +78,38 @@ material = SubResource("ORMMaterial3D_0ybyt")
 [node name="AccessTerminal" parent="SubViewport" instance=ExtResource("4_wv2ci")]
 transform = Transform3D(0.0299803, 0, 0.99955, 0, 1, 0, -0.99955, 0, 0.0299803, -2.59066, -0.518675, -5.92138)
 
+[node name="AccessTerminal2" parent="SubViewport" instance=ExtResource("4_wv2ci")]
+transform = Transform3D(0.0299803, 0, 0.99955, 0, 1, 0, -0.99955, 0, 0.0299803, -2.56664, -0.518675, -7.99331)
+
 [node name="Camera" parent="SubViewport" instance=ExtResource("5_r2frf")]
 transform = Transform3D(0.783086, 0, -0.621913, 0, 1, 0, 0.621913, 0, 0.783086, -1.91939, 0, 0)
 
+[node name="camera" parent="SubViewport/Camera/Camera3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Cube" parent="SubViewport/Camera/Camera3D/camera" index="0"]
+surface_material_override/0 = null
+
 [node name="Camera2" parent="SubViewport" instance=ExtResource("5_r2frf")]
-transform = Transform3D(-0.999339, 0, 0.0363646, 0, 1, 0, -0.0363646, 0, -0.999339, 1.96801, 0, -7.97799)
+transform = Transform3D(-0.0578951, 0, 0.998323, 0, 1, 0, -0.998323, 0, -0.0578951, 1.96801, 0, -7.97799)
 
 [node name="Camera3D" parent="SubViewport/Camera2" index="0"]
 current = true
 
+[node name="camera" parent="SubViewport/Camera2/Camera3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Cube" parent="SubViewport/Camera2/Camera3D/camera" index="0"]
+surface_material_override/0 = null
+
 [node name="Camera3" parent="SubViewport" instance=ExtResource("5_r2frf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13273, 0, 0)
+
+[node name="camera" parent="SubViewport/Camera3/Camera3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Cube" parent="SubViewport/Camera3/Camera3D/camera" index="0"]
+surface_material_override/0 = null
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(0.8381, 0, 0.545517, 0, 1, 0, -0.545517, 0, 0.8381, -1.80624, 0.149428, -3.38184)
@@ -150,6 +171,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(1, 1, 1, 0.690196)
 
+[editable path="Game Master"]
 [editable path="SubViewport/Camera"]
+[editable path="SubViewport/Camera/Camera3D/camera"]
 [editable path="SubViewport/Camera2"]
+[editable path="SubViewport/Camera2/Camera3D/camera"]
 [editable path="SubViewport/Camera3"]
+[editable path="SubViewport/Camera3/Camera3D/camera"]

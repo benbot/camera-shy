@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkmyxv44fgggy"]
+[gd_scene load_steps=11 format=3 uid="uid://bkmyxv44fgggy"]
 
 [ext_resource type="Script" path="res://camera/camera.gd" id="1_5aor3"]
 [ext_resource type="PackedScene" uid="uid://d3ng5y237qeim" path="res://assets/camera.blend" id="2_vb34w"]
+[ext_resource type="Shader" path="res://assets/ps2-corruption.gdshader" id="3_xd770"]
 
 [sub_resource type="Animation" id="Animation_mvdnt"]
 resource_name = "RESET"
@@ -11,13 +12,38 @@ _data = {
 "RESET": SubResource("Animation_mvdnt")
 }
 
+[sub_resource type="Gradient" id="Gradient_w3j18"]
+offsets = PackedFloat32Array(0, 0.377358, 0.783648, 1)
+colors = PackedColorArray(0, 1, 0, 1, 0.883707, 0, 0.276164, 1, 1.92523e-07, 0.925468, 0.616989, 1, 0.87779, 0, 0.197327, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1oap5"]
+gradient = SubResource("Gradient_w3j18")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u4u16"]
+render_priority = 0
+shader = ExtResource("3_xd770")
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/uv_scrolling_velocity = Vector2(1, 0)
+shader_parameter/vertex_snapping_offset = 0.435
+shader_parameter/corruption_amount = 0.265
+shader_parameter/corruption_seed = 1.0
+shader_parameter/corrupt_red = true
+shader_parameter/corrupt_green = true
+shader_parameter/corrupt_blue = true
+shader_parameter/checker = true
+shader_parameter/checker_size = Vector2(200, 200)
+shader_parameter/checker_offset = 2.0
+shader_parameter/emission_scalar = 0.495
+shader_parameter/albedo = SubResource("GradientTexture2D_1oap5")
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_yvdrv"]
-size = Vector3(2.13928, 1.76062, 1)
+size = Vector3(2.13928, 1.76062, 3.77686)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jfkip"]
 radius = 0.25
 
 [node name="Camera" type="StaticBody3D" groups=["camera"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -42.8002)
 script = ExtResource("1_5aor3")
 mouse_sensitivity = null
 
@@ -30,10 +56,13 @@ libraries = {
 }
 
 [node name="camera" parent="Camera3D" instance=ExtResource("2_vb34w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.068283)
+transform = Transform3D(3.23672, 0, 0, 0, 3.23672, 0, 0, 0, 3.23672, 0, 0, 0.0682831)
+
+[node name="Cube" parent="Camera3D/camera" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_u4u16")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0368042, 0.0411694, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0368042, 0.0411694, -0.0583496)
 shape = SubResource("BoxShape3D_yvdrv")
 
 [node name="ui" type="Control" parent="."]
@@ -85,3 +114,5 @@ text = "Click to change camera"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538753)
 shape = SubResource("SphereShape3D_jfkip")
 target_position = Vector3(0, 0, -100)
+
+[editable path="Camera3D/camera"]

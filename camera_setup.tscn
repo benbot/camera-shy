@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddvpl337k5osp"]
+[gd_scene load_steps=8 format=3 uid="uid://ddvpl337k5osp"]
 
 [ext_resource type="PackedScene" uid="uid://degqvhttwux42" path="res://vfx/vhs/vhs.tscn" id="1_mv5sg"]
 [ext_resource type="Shader" path="res://vfx/vhs/vhs.gdshader" id="2_lnjwq"]
@@ -23,6 +23,26 @@ shader_parameter/colorOffsetIntensity = 0.1
 shader_parameter/useDepth = false
 shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_pcp8s")
 
+[sub_resource type="Shader" id="Shader_jkmqp"]
+code = "shader_type canvas_item;
+
+void vertex() {
+
+	// Called fo every vertex the material is visible on.
+}
+
+void fragment() {
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sg5bs"]
+shader = SubResource("Shader_jkmqp")
+
 [node name="CameraSetup" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -83.9362, 0)
 
@@ -34,3 +54,18 @@ unique_name_in_owner = true
 mesh = SubResource("QuadMesh_1ohfr")
 surface_material_override/0 = SubResource("ShaderMaterial_vhehd")
 vp_path = NodePath("../../../SubViewport")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+process_mode = 4
+material = SubResource("ShaderMaterial_sg5bs")
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(1, 1, 1, 0.690196)
