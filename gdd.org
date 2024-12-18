@@ -42,6 +42,3 @@ NetSec attempts to slow the player down or catch them in 2 ways.
 Setting timers for a full network shutdown
 and
 also hoping through cameras trying to land on the player
-
-*** Hoping behavior
-TBD

@@ -15,10 +15,11 @@ var shader: ShaderMaterial
 
 func _ready():
   shader = preload("res://access_terminal/access_terminal_mat.tres").duplicate()
-  shader.set_shader_parameter("corruption_amount", 0.8)
-  get_node("office_desk2/office_desk").material_override = shader
-  get_node("crt_monitor2/crt_monitor").material_override = shader
-  get_node("computer_keyboard_012/computer_keyboard_01").material_override = shader
+  # shader.set_shader_parameter("corruption_amount", 0.8)
+  print(shader.get_shader_parameter("corruption_amount"))
+  get_node("office_desk2/office_desk").set_surface_override_material(0, shader)
+  get_node("crt_monitor2/crt_monitor").set_surface_override_material(0, shader)
+  get_node("computer_keyboard_012/computer_keyboard_01").set_surface_override_material(0, shader)
 
 var corruption := 0.0 : 
   set(val):

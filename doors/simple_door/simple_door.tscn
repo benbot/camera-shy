@@ -1,18 +1,180 @@
-[gd_scene load_steps=4 format=3 uid="uid://dc7t20gnyyy3l"]
+[gd_scene load_steps=8 format=3 uid="uid://dc7t20gnyyy3l"]
 
 [ext_resource type="Script" path="res://doors/simple_door/simple_door.gd" id="1_7q7rl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kguai"]
-size = Vector3(2.16, 2.646, 1)
+size = Vector3(4.16785, 3.65753, 0.169495)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gqcvd"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_1y1pj"]
+albedo_color = Color(0.737193, 0.737193, 0.737193, 1)
+
+[sub_resource type="Animation" id="Animation_bqpn3"]
+resource_name = "OPEN"
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("door_transform2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.10461, 0, 0), Vector3(-1.58356, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door_transform2:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0.1), Vector3(0.006, 1, 0.1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("door_transform:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.08035, 0, 0), Vector3(1.63727, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("door_transform:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0.1), Vector3(0.004, 1, 0.1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("mesh1:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_fevv0"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("door_transform2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.10461, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door_transform2:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 0.1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("door_transform:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.08035, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("door_transform:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 0.106971)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("mesh1:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_scfef"]
+_data = {
+"OPEN": SubResource("Animation_bqpn3"),
+"RESET": SubResource("Animation_fevv0")
+}
 
 [node name="SimpleDoor" type="StaticBody3D"]
 script = ExtResource("1_7q7rl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00392334, -0.137237, -0.0135803)
 shape = SubResource("BoxShape3D_kguai")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.15964, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0, 0, 0)
+[node name="mesh1" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1.0547, 0, 0, 0, 2.56255, 0, 0, 0, 0.00582579, 0.00857866, 0, 0)
 mesh = SubResource("BoxMesh_gqcvd")
+surface_material_override/0 = SubResource("ORMMaterial3D_1y1pj")
+
+[node name="door_transform" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 1.61522e-08, 0, -1.50996e-07, -0.106971, 1.08035, 0, 0)
+
+[node name="mesh2" type="MeshInstance3D" parent="door_transform"]
+unique_name_in_owner = true
+transform = Transform3D(1.08896, 0, 0, 0, 2.64579, 0, 0, 0, 1, -0.500472, 0, 0)
+mesh = SubResource("BoxMesh_gqcvd")
+skeleton = NodePath("../..")
+
+[node name="door_transform2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, -1.10461, 0, 0)
+
+[node name="mesh3" type="MeshInstance3D" parent="door_transform2"]
+unique_name_in_owner = true
+transform = Transform3D(1.08896, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0.531868, 0, 0)
+mesh = SubResource("BoxMesh_gqcvd")
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_scfef")
+}

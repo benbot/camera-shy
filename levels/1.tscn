@@ -44,9 +44,9 @@ background_mode = 2
 sky = SubResource("Sky_bky8c")
 tonemap_mode = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icdmf"]
-transparency = 1
-albedo_color = Color(0.16, 0, 0.104, 0.686275)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hm88r"]
+albedo_color = Color(0.277528, 0.277528, 0.277528, 1)
+metallic = 0.95
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_jy5vw")
@@ -90,18 +90,11 @@ transform = Transform3D(-0.993742, 0.0335351, -0.106541, 3.58278e-09, 0.953864, 
 transform = Transform3D(-2.22714, 0, 0.000955345, 0, 2.22759, 0, -0.00139933, 0, -1.52051, 9.39568, 0.0399992, -11.8403)
 
 [node name="SimpleDoor" parent="SubViewport" instance=ExtResource("6_j8dtl")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -1.82056, -1.90735e-06, -27.1961)
-
-[node name="MeshInstance3D" parent="SubViewport/SimpleDoor" index="1"]
-transform = Transform3D(14.888, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0, 0.698773, 0)
-surface_material_override/0 = SubResource("StandardMaterial3D_icdmf")
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0.0179982, -0.0363894, -27.1961)
 
 [node name="SimpleDoor2" parent="SubViewport" instance=ExtResource("6_j8dtl")]
-transform = Transform3D(8.57352, 0, 0, 0, 5, 0, 0, 0, 1.75, -0.387865, -1.90735e-06, -4.63863)
-
-[node name="MeshInstance3D" parent="SubViewport/SimpleDoor2" index="1"]
-transform = Transform3D(2.15964, 0, 0, 0, 2.64579, 0, 0, 0, 1, 0, 0.996656, 0)
-surface_material_override/0 = SubResource("StandardMaterial3D_icdmf")
+transform = Transform3D(7.66413, 0, 0, 0, 7.66413, 0, 0, 0, 7.66413, -0.387865, -3.23761, -4.63863)
+door_material = SubResource("StandardMaterial3D_hm88r")
 
 [node name="AccessTerminal" parent="." instance=ExtResource("5_qcnk7")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -0.310947, 0.136443, -0.628009)
@@ -119,6 +112,4 @@ transform = Transform3D(1.99837, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0281026, 0)
 [editable path="CameraSetup"]
 [editable path="SubViewport/Camera1"]
 [editable path="SubViewport/Camera1/Camera3D/camera"]
-[editable path="SubViewport/SimpleDoor"]
-[editable path="SubViewport/SimpleDoor2"]
 [editable path="level1"]
